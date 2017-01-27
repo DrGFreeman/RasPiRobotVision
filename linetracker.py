@@ -93,12 +93,12 @@ def getIntHPosBtm(img):
     ## Convert image to HSV
     img = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
 
-    ## Crop to keep only bottom portion of image
-    img = img[36:, :]
+    ## Crop to keep only bottom portion of image (50px high)
+    img = img[46:, :]
 
     ## Threshold green tape color
-    lowGreen = np.array([45, 50, 50])
-    highGreen = np.array([80, 255, 255])
+    lowGreen = np.array([35, 80, 50])
+    highGreen = np.array([75, 255, 255])
     mask = cv2.inRange(img, lowGreen, highGreen)
 
     ## Dilate & erode to eliminate holes
@@ -108,7 +108,7 @@ def getIntHPosBtm(img):
 
     ## Define Regions of Interest (ROIs)
     top = mask[:8, 8:120]
-    btm = mask[52:, 8:120]
+    btm = mask[42:, 8:120]
     left = mask[:, :8]
     right = mask[:, 120:]
 
