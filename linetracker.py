@@ -5,13 +5,13 @@ import numpy as np
 
 class LineTrackerBox():
 
-    def __init__(self, cam): 
+    def __init__(self, cam):
         """A class used to track a line using computer vision. Useful for line
         following or line maze solving. A Camera object instance with size
         parameter of 2 is passed to the class constructor. The .trackLine()
         method launches a thread that continuously takes images from the camera
-        nd runs the .getIntBtmHPos() function to update the class intersection
-        and btmHPos attributes. See description of .getIntBtmHPos() function for
+        and runs the .getIntHPosBtm() function to update the class intersection
+        and hPosBtm attributes. See description of .getIntHPosBtm() function for
         details on the meaning of these parameters."""
         self.active = False
         try:
@@ -21,12 +21,12 @@ class LineTrackerBox():
                 raise ValueError
         except ValueError:
             raise ValueError("Camera instance size attribute must equal 2")
-        self.btmHPos = 0
+        self.hPosBtm = 0
         self.intersection = 0
         self.trackLine()
 
-    def getBtmHPos(self):
-        return self.btmHPos
+    def getHPosBtm(self):
+        return self.hPosBtm
 
     def getIntersection(self):
         return self.intersection
@@ -35,16 +35,16 @@ class LineTrackerBox():
         """Stops the active thread running the .trackLine() method."""
         self.active = False
         time.sleep(.1)
-        self.btmHPos = 0
+        self.hPosBtm = 0
         self.intersection = 0
 
     def _trackLine(self):
         """Private method that continuously takes images from the camera
-            and runs the .getIntBtmHPos() method to update the class
+            and runs the .getIntHPosBtm() method to update the class
             intersection and hPosBtm attributes."""
         while self.active:
             img = self.cam.getOpenCVImage()
-            self.intersection, self.btmHPos = getIntBtmHPos(img)
+            self.intersection, self.hPosBtm = getIntHPosBtm(img)
 
     def trackLine(self):
         """Starts the .trackLine() method in a thread. Use the .stop()
@@ -76,7 +76,7 @@ def findMaxAreaContour(img, minArea):
 
     return ret
 
-def getIntBtmHPos(img):
+def getIntHPosBtm(img):
     """ Analyses an image to find the green tape lines. Returns:
         intersection: a number corresponding to the type of intersection:
             0:  Dead-end
